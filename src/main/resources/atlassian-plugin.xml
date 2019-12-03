@@ -1,0 +1,102 @@
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+        <param name="plugin-icon">images/pluginIcon.png</param>
+        <param name="plugin-logo">images/pluginLogo.png</param>
+    </plugin-info>
+
+    <web-resource key="tbImages" name="tbImages">
+        <resource type="download" name="tb_logo.png" location="images/tb_logo.png"/>
+        <resource type="download" name="tb_icon.png" location="images/tb_icon.png"/>
+    </web-resource>
+
+    <web-resource key="tbJS" name="tbJS">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <dependency>bamboo.web.resources:bamboojs</dependency>
+        <dependency>bamboo.web.resources:extraJQuery</dependency>
+    </web-resource>
+
+    <web-resource key="tbCSS" name="tbCSS">
+        <resource type="download" name="testingbot.css" location="css/testingbot.css"/>
+    </web-resource>
+
+    <preBuildAction key="tbBuildConfigurator" name="TestingBot Build Configurator"
+                    class="com.testingbot.bamboo.action.BuildConfigurator">
+        <resource type="freemarker" name="view" location="templates/build/tbView.ftl"/>
+        <resource type="freemarker" name="edit" location="templates/build/tbEdit.ftl"/>
+        <description>Configures TestingBot Build Plan Settings</description>
+    </preBuildAction>
+
+    <preBuildQueuedAction key="bEnvironmentConfigurator" name="TestingBot Environment Configurator"
+                          class="com.testingbot.bamboo.action.EnvironmentConfigurator">
+    </preBuildQueuedAction>
+
+    <buildProcessor key="tbPostRunner" name="TestingBot Post Runner"
+                    class="com.testingbot.bamboo.action.PostBuildAction">
+        <skipIfFailed>false</skipIfFailed>
+    </buildProcessor>
+
+
+    <xwork key="tbActions" name="TestingBot Actions">
+        <package name="tbAdmin" extends="admin" namespace="/admin/testingbot">
+            <action name="configureTestingBot" class="com.testingbot.bamboo.admin.action.ConfigureAction" method="edit">
+                <result name="input" type="freemarker">/templates/admin/configureTestingBot.ftl</result>
+                <result name="success" type="freemarker">/templates/admin/configureTestingBot.ftl</result>
+                <result name="error" type="freemarker">/error.ftl</result>
+                <param name="mode">edit</param>
+            </action>
+
+            <action name="configureTestingBotSave" class="com.testingbot.bamboo.admin.action.ConfigureAction"
+                    method="save">
+                <result name="input" type="freemarker">/templates/admin/configureTestingBot.ftl</result>
+                <result name="success" type="freemarker">/templates/admin/configureTestingBot.ftl</result>
+                <result name="error" type="freemarker">/error.ftl</result>
+            </action>
+
+        </package>
+        <package name="tbPlan" extends="buildView">
+            <action name="viewTestingBotPlan" class="com.testingbot.bamboo.plan.ViewTestingBotAction" method="default">
+                <result name="input" type="freemarker">/templates/plan/viewTestingBot.ftl</result>
+                <result name="success" type="freemarker">/templates/plan/viewTestingBot.ftl</result>
+                <result name="error" type="freemarker">/error.ftl</result>
+            </action>
+
+        </package>
+        <package name="tbResult" extends="buildView">
+            <action name="viewTestingBotResult" class="com.testingbot.bamboo.plan.ViewTestingBotAction" method="default">
+                <result name="input" type="freemarker">/templates/plan/viewTestingBotBuildResult.ftl</result>
+                <result name="success" type="freemarker">/templates/plan/viewTestingBotBuildResult.ftl</result>
+                <result name="error" type="freemarker">/error.ftl</result>
+            </action>
+            <action name="viewTestingBotJobResult" class="com.testingbot.bamboo.plan.ViewTestingBotTestAction" method="default">
+                <result name="input" type="freemarker">/templates/plan/viewTestingBotJobResult.ftl</result>
+                <result name="success" type="freemarker">/templates/plan/viewTestingBotJobResult.ftl</result>
+                <result name="error" type="freemarker">/error.ftl</result>
+            </action>
+
+        </package>
+    </xwork>
+
+    <web-item key="tbAdminLink" name="tbAdminLink" section="system.admin/communication" weight="130">
+        <label key="TestingBot"/>
+        <link linkId="testingbotConfig">/admin/testingbot/configureTestingBot.action</link>
+    </web-item>
+
+    <web-item key="tbPlanDetails" name="testingbot" section="chainResults.subMenu/chainResults" weight="50">
+        <description key="tbPlanDetails.desc">Provides details of the TestingBot results</description>
+        <label key="TestingBot Tests"/>
+        <link linkId="tbPlanDetails">/build/result/viewTestingBotResult.action?buildKey=${buildKey}&amp;buildNumber=${buildNumber}</link>
+        <condition class="com.testingbot.bamboo.plan.ViewTestingBotCondition">
+        </condition>
+    </web-item>
+
+    <web-item key="sodResultsDetails" name="testingbot" section="results.subMenu/results" weight="50">
+        <description key="tbPlanDetails.desc">Provides details of the TestingBot results</description>
+        <label key="TestingBot Tests"/>
+        <link linkId="tbPlanDetails">/build/result/viewTestingBotResult.action?buildKey=${buildKey}&amp;buildNumber=${buildNumber}</link>
+        <condition class="com.testingbot.bamboo.plan.ViewTestingBotCondition">
+        </condition>
+    </web-item>
+</atlassian-plugin>
