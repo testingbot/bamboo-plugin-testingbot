@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.testingbot.bamboo</groupId>
     <artifactId>bamboo-testingbot-plugin</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
     <name>Bamboo TestingBot Plugin</name>
     <packaging>atlassian-plugin</packaging>
     <description>The TestingBot Plugin for Bamboo</description>
