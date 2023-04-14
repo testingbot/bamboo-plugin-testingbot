@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.testingbot.bamboo</groupId>
     <artifactId>bamboo-testingbot-plugin</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
     <name>Bamboo TestingBot Plugin</name>
     <packaging>atlassian-plugin</packaging>
     <description>The TestingBot Plugin for Bamboo</description>
@@ -44,7 +44,7 @@
         <connection>scm:git:git://github.com/testingbot/bamboo-plugin-testingbot.git</connection>
         <developerConnection>scm:git:git@github.com:testingbot/bamboo-plugin-testingbot.git</developerConnection>
         <url>git@github.com:testingbot/bamboo-plugin-testingbot.git</url>
-        <tag>bamboo-testingbot-plugin-1.0.2</tag>
+        <tag>bamboo-testingbot-plugin-1.0.0</tag>
     </scm>
     <dependencies>
         <dependency>
