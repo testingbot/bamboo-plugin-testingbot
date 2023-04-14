@@ -113,7 +113,7 @@ public class BuildConfigurator extends BaseConfigurableBuildPlugin implements Cu
     private String getResolvedOptions(String tunnelOptions) {
         String options = tunnelOptions;
         if (options != null) {
-            return customVariableContext.substituteString(options, buildContext, null);
+            return customVariableContext.substituteString(options);
         }
         return "";
     }
